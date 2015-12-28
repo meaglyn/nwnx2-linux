@@ -89,6 +89,14 @@ void NotifyEventHooksNotAbortable(HANDLE hEvent, uintptr_t pParam);
 int SetHookDefaultForHookableEvent(HANDLE hEvent, NWNXHOOK pfnHook);
 
 /**
+ * SetHookInitializer
+ *
+ * Sets a function to be called when the first (and only first) listener
+ * registers to an event.
+ */
+int SetHookInitializer(HANDLE hEvent, NWNXHOOK pfnInitialize);
+
+/**
  * HookEvent
  *
  * Adds a new hook to the chain 'name', to be called when the hook owner calls
@@ -116,6 +124,15 @@ HANDLE HookEvent(const char *name, NWNXHOOK hookProc);
  * Returns 0 on success or nonzero if hHook is invalid.
 */
 int UnhookEvent(HANDLE hHook);
+
+/**
+ * GetCurrentEventName
+ *
+ * Returns the currently running event name, or NULL if not in a event handler.
+ *
+ * In nested event handlers, only the topmost (current) one is ever returned.
+ */
+const char *GetCurrentEventName();
 
 
 /**

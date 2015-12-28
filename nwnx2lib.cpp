@@ -76,6 +76,21 @@ static int nwnxinitdisabled = 0;
 // hashtable (ok, ok, a red-black tree)
 static map<string, CNWNXBase*> Libraries;
 
+const map<string, CNWNXBase*> & GetLoadedLibraries()
+{
+    return Libraries;
+}
+
+const int GetCoreDebugLevel()
+{
+    return debuglevel;
+}
+
+void SetCoreDebugLevel(int level)
+{
+    debuglevel = level;
+}
+
 static unsigned char jmp_code[] = "\x68\x60\x70\x80\x90"	/* push dword 0x90807060 */
                                   "\xc3\x90\x90";		/* ret , nop , nop       */
 static unsigned char ret_code_ss[0x20] asm("ret_code_ss");
@@ -391,7 +406,7 @@ LoadLibraries()
         if ((handle = dlopen(fname, RTLD_NOW)) == NULL) {
 
             Log(0, "ERROR: dlopen: %s: %s\n" , fname, dlerror());
-            continue;
+            exit(1);
         }
 
         // get the Class Accessor
@@ -399,7 +414,7 @@ LoadLibraries()
                               "GetClassObject")) == NULL) {
             Log(0, "ERROR: dlsym: %s: %s\n" , fname, dlerror());
             dlclose(handle);
-            continue;
+            exit(1);
         }
 
         Plugin_Info getPluginInfo = (Plugin_Info) dlsym(handle, "GetPluginInfo");
@@ -425,7 +440,7 @@ LoadLibraries()
         if ((pBase = (*GetClassObject)()) == NULL) {
             Log(0, "ERROR: %s: GetClassObject returned NULL.\n", key);
             dlclose(handle);
-            continue;
+            exit(1);
         }
 
         // initialize the plugin
@@ -434,7 +449,7 @@ LoadLibraries()
         if (!pBase->OnCreate(&nwnxConfig, logDir)) {
             Log(0, "ERROR: %s: OnCreate() failed.\n", key);
             dlclose(handle);
-            continue;
+            exit(1);
         }
 
         // Register the plugin
@@ -662,6 +677,8 @@ void LoadCoreModule()
     pluginCoreLink.NotifyEventHooks = NotifyEventHooks;
     pluginCoreLink.NotifyEventHooksNotAbortable = NotifyEventHooksNotAbortable;
     pluginCoreLink.SetHookDefaultForHookableEvent = SetHookDefaultForHookableEvent;
+    pluginCoreLink.GetCurrentEventName = GetCurrentEventName;
+    pluginCoreLink.SetHookInitializer = SetHookInitializer;
     //pluginCoreLink.NotifyEventHooksDirect=CallHookSubscribers;
 
     hPluginsLoadedEvent = CreateHookableEvent(EVENT_CORE_PLUGINSLOADED);
@@ -713,6 +730,7 @@ startstop::startstop()
 
     printf("* Loading modules...\n");
     LoadLibraries();
+    Core_Init(&pluginCoreLink);
     NotifyEventHooksNotAbortable(hPluginsLoadedEvent, 0);
 
     // log & emit

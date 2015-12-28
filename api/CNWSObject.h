@@ -8,6 +8,7 @@
 #include "CExoLocString.h"
 #include "CExoLinkedList.h"
 #include "CNWSObjectActionNode.h"
+#include "CGameEffect.h"
 
 class CNWSObject
 {
@@ -158,7 +159,7 @@ public:
     int GetReputation(unsigned long, int &, int);
     int GetSavingThrowSpellId();
     CScriptLocation GetScriptLocation();
-    int GetScriptVarTable();
+    CNWSScriptVarTable * GetScriptVarTable();
     int GetSelectableWhenDead();
     CExoString * GetTag();
     CExoString * GetTemplate();
@@ -324,12 +325,13 @@ public:
     /* 0xD4/212 */ unsigned long Invulnerable;
     /* (mtype:CExoLinkedList<CNWSObjectActionNode>) */
     /* 0xD8/216 */ CExoLinkedList<CNWSObjectActionNode> ActionsList;
-    /* 0xDC/220 */ unsigned long ScriptVarTable;
+    /* 0xDC/220 */ CNWSScriptVarTable * ScriptVarTable;
     /* 0xE0/224 */ unsigned long field_E0;
     /* 0xE4/228 */ unsigned long field_E4;
     /* 0xE8/232 */ unsigned long field_E8;
-    /* 0xEC/236 */ void *Effects;
-    /* 0xF8/248 */ char rsvd5[8];
+    /* 0xEC/236 */ CGameEffect **Effects;
+    /* 0xF0/240 */ unsigned long EffectsLength;
+    /* 0xF4/244 */ char rsvd5[4];
     /* 0xF8/248 */ unsigned long PerceptionList;
     /* 0x1C0/448 */ char rsvd6[196];
     /* 0x1C0/448 */ unsigned long field_1C0;

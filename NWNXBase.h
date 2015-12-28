@@ -26,7 +26,7 @@
 #include <string.h>
 #include "gline.h"
 #include "newpluginapi.h"
-#include "pluginlink_core.h"
+#include "core/core.h"
 
 #define OBJECT_INVALID 0x7F000000
 
@@ -98,6 +98,8 @@ public:
     // Parameters:
     //  level	: the desired level
     int SetDebugLevel(int level);
+
+    int GetDebugLevel();
 
     ///////////////////////////////////////////////////////////////////////////
     // Function: BaseConf ();

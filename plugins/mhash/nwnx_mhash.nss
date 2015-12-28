@@ -1,4 +1,18 @@
 /**
+ * Generates a UUID.
+ *
+ * The UUID will be of type v4 when a reliable source of random
+ * data is available; otherwise, it will be a v3 bound to your local
+ * MAC address.
+ *
+ * See uuid_generate(3) for details.
+ *
+ * Returned value is a 36-character UUID like so:
+ *   2f8e8c3e-61e0-4f97-b367-b9d5c8123693
+ */
+string mhash_uuid();
+
+/**
  * Hashes a string with a named algorithm.
  *
  * For a list of supported algorithms, read the mhash manpage of your distro, or have a look
@@ -41,6 +55,15 @@ string mhash_hmac(string algorithm, string password, string data);
  * sensitive data. Errors are printed to the plugin log.
  */
 string mhash_keygen_mcrypt(int length, string algorithm, string password, string salt);
+
+string mhash_uuid()
+{
+    SetLocalString(GetModule(), "NWNX!MHASH!UUID", " ");
+    string ret = GetLocalString(GetModule(), "NWNX!MHASH!UUID");
+    // We delete it to make sure we dont leak anything to other scripts.
+    DeleteLocalString(GetModule(), "NWNX!MHASH!UUID");
+    return ret;
+}
 
 string mhash_hash(string algorithm, string data)
 {
