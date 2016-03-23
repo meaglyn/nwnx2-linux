@@ -28,5 +28,8 @@ public:
     void SetString(CExoString &, CExoString &);
     ~CNWSScriptVarTable();
 
+    CNWSScriptVar *First;
+    uint32_t Len;
+
 };
 #endif

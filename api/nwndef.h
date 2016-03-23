@@ -1,6 +1,7 @@
 #ifndef _NWNDEF_H_
 #define _NWNDEF_H_
 #include"custom/nwndef_custom.h"
+#include "../typedef.h"
 class CNWSCreature;
 class CNWSPlaceable;
 class CNWSObject;
@@ -204,26 +205,20 @@ class CPathfindInfoIntraTileSuccessors;
 class CExtendedServerInfo;
 class MS_RSAPublicKey;
 class Matrix;
-struct CNWSClient_vtbl;
 struct CServerExoAppConfig;
-struct CNWSObjectMethods;
 struct CNWSCreatureAppearanceInfo;
 struct CResStruct;
 struct CNWSActionNode;
 struct CExoLinkedListNode;
 struct ExoLocString_st;
 struct CGameObjectArrayElement;
-struct CNWVirtualMachineCommands_vtbl;
 struct CVirtualMachineCommand;
 struct CNWSVector;
-struct CServerExoApp_vt;
-struct CRes_vtbl;
-struct CExoPackedFile_vtbl;
 struct CActionParam;
 struct CNWModule;
 struct CAppManager_ModuleInfo;
 struct CVirtualMachineScript;
-struct CResHelper;
+template<typename RES> struct CResHelper;
 struct CKeyTableEntry;
 struct CDialogEntry;
 struct CDialogReply;
@@ -299,4 +294,7 @@ struct CTlkTableToken;
 struct CNWTilePathNode;
 struct CVirtualMachineDebuggingContext;
 struct Quaternion;
+
+#include "vptr.h"
+
 #endif

@@ -81,7 +81,7 @@ const map<string, CNWNXBase*> & GetLoadedLibraries()
     return Libraries;
 }
 
-const int GetCoreDebugLevel()
+int GetCoreDebugLevel()
 {
     return debuglevel;
 }
@@ -679,6 +679,7 @@ void LoadCoreModule()
     pluginCoreLink.SetHookDefaultForHookableEvent = SetHookDefaultForHookableEvent;
     pluginCoreLink.GetCurrentEventName = GetCurrentEventName;
     pluginCoreLink.SetHookInitializer = SetHookInitializer;
+    pluginCoreLink.HookEventOptionally = HookEventOptionally;
     //pluginCoreLink.NotifyEventHooksDirect=CallHookSubscribers;
 
     hPluginsLoadedEvent = CreateHookableEvent(EVENT_CORE_PLUGINSLOADED);
